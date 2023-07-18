@@ -108,7 +108,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget_damagochi">
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="stackedwidget_page_1">
          <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -206,7 +206,13 @@
                       </size>
                      </property>
                      <property name="text">
-                      <string>이미지</string>
+                      <string/>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="../src_img/my_qrc.qrc">:/newPrefix/누끼 마멧.png</pixmap>
+                     </property>
+                     <property name="scaledContents">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -552,7 +558,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="btn_join">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -565,7 +571,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_2">
+                 <widget class="QPushButton" name="btn_login">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -1173,8 +1179,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>174</width>
-                     <height>537</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                   </widget>
@@ -1227,6 +1233,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../src_img/my_qrc.qrc"/>
+  <include location="damagochi_ver2/code/front/src_img/my_qrc.qrc"/>
+ </resources>
  <connections/>
 </ui>

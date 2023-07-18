@@ -1,0 +1,3 @@
+from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
+
+Ui_frame_damagochi
