@@ -9,6 +9,7 @@ from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
 from network.class_client import ClientApp
 from code.front.widget_screen import Screen
 
+
 class ClientController(QtWidgets.QWidget):
     def __init__(self, client_app=ClientApp):
         super().__init__()
@@ -20,6 +21,7 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
+
     def run(self):
         self.widget_screen.show()
 

@@ -5,7 +5,7 @@ from threading import *
 
 
 class ClientApp:
-    HOST = '127.0.0.1'
+    HOST = '이종혁'
     PORT = 9999
     BUFFER = 50000
     FORMAT = "utf-8"
