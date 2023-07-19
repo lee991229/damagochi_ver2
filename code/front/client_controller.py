@@ -11,7 +11,9 @@ from code.front.widget_screen import Screen
 
 
 class ClientController(QtWidgets.QWidget):
+
     assert_same_id_signal = pyqtSignal(bool)
+
     def __init__(self, client_app=ClientApp):
         super().__init__()
         self.client_app = client_app

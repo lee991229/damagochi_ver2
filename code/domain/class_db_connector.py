@@ -92,13 +92,9 @@ class DBConnector:
 
     def user_log_in(self, login_id, login_pw):
         c = self.start_conn()
-        print(login_id)
-        print(login_pw)
         exist_user = c.execute('select * from user where user_name = ? and user_pw = ?',
                                (login_id, login_pw)).fetchone()
-        print('지나옴?1')
         self.end_conn()
-        print('지나옴?2')
         if exist_user is not None:
             print('로그인 성공')
             print(exist_user)
@@ -120,25 +116,33 @@ class DBConnector:
         else:
             print('사용 불가능한 아이디 입니다.')  # 사용불가
             return False
-    def insert_user(self, user_object: User):
-        c = self.start_conn()
-        user_id = user_object.user_id
-        user_name = user_object.username
-        password = user_object.password
-        nickname = user_object.nickname
-        users_id = c.execute('select * from user where user_id = ?', (user_id,)).fetchone()
 
-        if users_id is None:
-            c.execute('insert into user(username, password, nickname) values (?, ?, ?)',
-                      (user_name, password, nickname))
-            self.commit_db()
-            inserted_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
-            inserted_user_obj = User(*inserted_user_row)
-            self.end_conn()
-            return inserted_user_obj
+    def assert_same_login_id(self, inserted_id):
+        c = self.start_conn()
+
+        username_id = c.execute('select * from user where username = ?', (inserted_id,)).fetchone()
+        if username_id is None:
+            print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
+            return True
         else:
-            updated_user_obj = self.update_user(user_object)
-            return updated_user_obj
+            print('사용 불가능한 아이디 입니다.')  # 사용불가
+            return False
+
+    def user_sign_up(self,user_data):
+        join_name, join_pw, join_nickname = user_data
+        useable_id = self.assert_same_login_id(join_name)
+        if useable_id is False:
+            return False
+        c = self.start_conn()
+        last_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
+        if last_user_row is None:
+            user_id = 1
+        else:
+            user_id = last_user_row[0] + 1
+        sign_up_user_obj = User(user_id, insert_id, insert_pw, nickname)
+        self.end_conn()
+        sing_up_obj = self.insert_user(sign_up_user_obj)
+        return sing_up_obj
 
     # def insert_user(self, user_object: User):
     #     c = self.start_conn()

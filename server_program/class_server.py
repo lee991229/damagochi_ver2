@@ -80,7 +80,6 @@ class Server:
                 break
             try:
                 read_sockets, _, exception_sockets = select.select(self.sockets_list, [], self.sockets_list, 0.1)
-
             except Exception:
                 continue
 
@@ -115,13 +114,16 @@ class Server:
             decode_msg = recv_message.decode(self.FORMAT).strip()
             header = decode_msg.split(header_split)[0]
             substance = decode_msg.split(header_split)[1]
+
             if header == 'login':  # 로그인
                 data = substance.split(list_split_1)
+                print(data)
                 login_name, login_pw = data
                 self.db_conn.user_log_in(login_name, login_pw)
 
             elif header == 'assertu_username':  # 아이디 중복
-                data = substance.split(list_split_1)
+                print(header)
+                print(substance)
                 join_username = substance
                 result = self.db_conn.assertu_username(join_username)
                 if result is True:
@@ -131,12 +133,21 @@ class Server:
                     response_header = f"{f'assertu_username{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     client_socket.send(response_header)
 
-            elif header == 'join_access':  # 로그인
+            elif header == 'join_access':  # 회원가입
                 data = substance.split(list_split_1)
                 print(data)
                 # join_name, join_pw, join_nickname = data
                 # print(join_name, join_pw, join_nickname)
-                self.db_conn.insert_user(data)
+                result = self.db_conn.user_sign_up(data)
+
+                if result is False:
+                    response_header = self.join_user.encode(self.FORMAT)
+                    result = response_header + self.dot_encoded
+                    self.send_message(client_socket, result)
+                else:
+                    response_header = self.join_user.encode(self.FORMAT)
+                    result = response_header + self.pass_encoded
+                    self.send_message(client_socket, result)
         except:
             return False
 

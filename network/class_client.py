@@ -34,6 +34,7 @@ class ClientApp:
     def send_join_id_and_pw_for_join_access(self, join_username, join_pw, join_nickname):
         client_sand_data = f"{f'join_access{header_split}{join_username}{list_split_1}{join_pw}{list_split_1}{join_nickname}':{self.BUFFER}}".encode(self.FORMAT)
         self.client_socket.send(client_sand_data)
+
     def set_widget(self, widget_):
         self.client_widget = widget_
 
@@ -49,7 +50,6 @@ class ClientApp:
 
     def receive_message(self):
         while True:
-            pass
             return_result = self.client_socket.recv(self.BUFFER).decode(self.FORMAT).strip()
             print(return_result)
             response_header = return_result.split(header_split)[0]

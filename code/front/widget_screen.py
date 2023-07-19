@@ -38,10 +38,6 @@ class Screen(QWidget, Ui_frame_damagochi):
     def assert_join(self):
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_2)
 
-    # 아이디 중복체크후 라벨에 결과 보여주기
-    def user_name_duplicate_check_true(self, text):
-        self.label.setText(text)
-
     # 유저 아이디 중복 체크
     def user_name_duplicate_check(self):
         assert_username = self.lineEdit_join_username.text()
@@ -49,6 +45,10 @@ class Screen(QWidget, Ui_frame_damagochi):
             self.client_controller.username_duplicatecheck(assert_username)
         else:
             self.user_name_duplicate_check_true("(사용불가)ID:")
+
+    # 아이디 중복체크후 라벨에 결과 보여주기
+    def user_name_duplicate_check_true(self, text):
+        self.label.setText(text)
 
     # 이름 확인
     def assert_not_blank_nickname(self):
