@@ -1,6 +1,6 @@
 import json
 
-json.dumps()
+# json.dumps()
 """
 CREATE TABLE "character" (
 	"character_id"	INTEGER,
@@ -36,10 +36,5 @@ CREATE TABLE "user" (
 	"user_pw"	TEXT NOT NULL,
 	"user_nickname"	TEXT NOT NULL,
 	PRIMARY KEY("user_id" AUTOINCREMENT)
-);
-
-CREATE TABLE "sqlite_sequence" (
-	"name"	,
-	"seq"	
 );
 """

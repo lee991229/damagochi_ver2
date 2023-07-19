@@ -1,8 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-from code.front.login_screen_method import Login
+from code.front.method_file.login_screen_method import Login
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
 
 
@@ -15,6 +14,10 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.set_btn_trigger()  # 버튼 시그널 받는 메서드
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
+        # 저장
+        self.join_username = None
+        self.join_pw = None
+        self.join_usernickname = None
 
     def mousePressEvent(self, event):
         self.client_controller.mousePressEvent(self, event)
@@ -22,7 +25,78 @@ class Screen(QWidget, Ui_frame_damagochi):
     def mouseMoveEvent(self, event):
         self.client_controller.mouseMoveEvent(self, event)
 
-    # 회원 가입 창 버튼 시그널 메서드
+    # 버튼 시그널 메서드
     def set_btn_trigger(self):
-        self.btn_login.clicked.connect(lambda state: Login.assert_login(self))
+        self.btn_login.clicked.connect(lambda state: self.assert_login())
+        self.btn_join.clicked.connect(lambda state: self.assert_join())
+        self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
+        self.btn_join_register.clicked.connect(lambda state: self.register_event())
+        self.btn_join_cancel.clicked.connect(lambda state: self.assert_join())
         pass
+
+    # =====회원가입==========================================================================================================
+    def assert_join(self):
+        self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_2)
+
+    # 아이디 중복체크후 라벨에 결과 보여주기
+    def user_name_duplicate_check_true(self, text):
+        self.label.setText(text)
+
+    # 유저 아이디 중복 체크
+    def user_name_duplicate_check(self):
+        assert_username = self.lineEdit_join_username.text()
+        if assert_username != '':
+            self.client_controller.username_duplicatecheck(assert_username)
+        else:
+            self.user_name_duplicate_check_true("(사용불가)ID:")
+
+    # 이름 확인
+    def assert_not_blank_nickname(self):
+        choice_nickname = self.lineEdit_join_nickname.text()
+        if choice_nickname != "":
+            return True
+        else:
+            return False
+
+    # 패스워드 확인
+    def assert_same_password(self):
+        reconfirm_pw = self.lineedit_join_pw_2.text()
+        pw = self.lineedit_join_pw_1.text()
+        if pw == reconfirm_pw and pw != "":  # 비밀 번호와 비밀 번호 확인이 일치하면
+            return True
+        else:
+            return False
+
+    #
+    def show_label_join_warning(self, text):
+        self.label_join_warning.setText(text)
+
+    # 회원가입
+    def register_event(self):
+        if self.client_controller.valid_duplication_id is False:
+            self.show_label_join_warning('아이디 중복체크를 해주세요')
+            return
+        elif self.assert_same_password() is False:  # 비밀번호 비밀번호 확인 비교
+            self.show_label_join_warning('비밀번호를 확인 하세요')
+            return
+        elif self.assert_not_blank_nickname() is False:  # 사용 가능 닉네임 검사
+            self.show_label_join_warning('이름을 확인하세요')
+            return
+        else:
+            self.client_controller.join_access()
+
+    # =====회원가입==========================================================================================================
+
+    # 로그인 버튼
+
+    def assert_login(self):
+        usr_inp_name = self.line_edit_id.text()
+        usr_inp_pw = self.line_edit_pw.text()
+        # if len(usr_inp_nick) == 0:  # 아이디 칸이 비어 있거나 잘못 적었을때
+        #     self.no_input_id()
+        #     return
+        # elif len(usr_inp_pw) == 0:  # 비밀 번호 칸이 비어 있거나 잘못 적었을때
+        #     self.no_input_pw()
+        #     return
+
+        self.client_controller.assert_login_data(usr_inp_name, usr_inp_pw)

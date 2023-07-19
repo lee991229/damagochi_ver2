@@ -108,7 +108,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget_damagochi">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="stackedwidget_page_1">
          <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -719,7 +719,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_7">
+                 <widget class="QLabel" name="label_join_warning">
                   <property name="text">
                    <string>안내문구 라벨</string>
                   </property>
@@ -761,12 +761,15 @@
                   <item row="3" column="0">
                    <widget class="QLabel" name="label_6">
                     <property name="text">
-                     <string>name</string>
+                     <string>name:</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="2">
-                   <widget class="QPushButton" name="pushButton_3">
+                   <widget class="QPushButton" name="btn_join_duplicatecheck">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -803,19 +806,19 @@
                   <item row="2" column="0">
                    <widget class="QLabel" name="label_5">
                     <property name="text">
-                     <string>비밀번호 확인</string>
+                     <string>비밀번호 확인:</string>
                     </property>
                    </widget>
                   </item>
                   <item row="1" column="0">
                    <widget class="QLabel" name="label_2">
                     <property name="text">
-                     <string>비밀번호 입력</string>
+                     <string>비밀번호 입력:</string>
                     </property>
                    </widget>
                   </item>
                   <item row="0" column="1">
-                   <widget class="QLineEdit" name="lineEdit">
+                   <widget class="QLineEdit" name="lineEdit_join_username">
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
@@ -831,7 +834,7 @@
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QLineEdit" name="lineEdit_2">
+                   <widget class="QLineEdit" name="lineedit_join_pw_1">
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
@@ -841,7 +844,7 @@
                    </widget>
                   </item>
                   <item row="2" column="1">
-                   <widget class="QLineEdit" name="lineEdit_3">
+                   <widget class="QLineEdit" name="lineedit_join_pw_2">
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
@@ -851,7 +854,7 @@
                    </widget>
                   </item>
                   <item row="3" column="1">
-                   <widget class="QLineEdit" name="lineEdit_4">
+                   <widget class="QLineEdit" name="lineEdit_join_nickname">
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
@@ -950,7 +953,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="pushButton_4">
+                 <widget class="QPushButton" name="btn_join_register">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -958,12 +961,12 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>회원가입</string>
+                   <string>가입 요청</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_5">
+                 <widget class="QPushButton" name="btn_join_cancel">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -971,7 +974,7 @@
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>로그인</string>
+                   <string>뒤로가기</string>
                   </property>
                  </widget>
                 </item>
@@ -1179,8 +1182,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>28</height>
+                     <width>174</width>
+                     <height>537</height>
                     </rect>
                    </property>
                   </widget>
