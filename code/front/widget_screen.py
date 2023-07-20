@@ -28,15 +28,23 @@ class Screen(QWidget, Ui_frame_damagochi):
     # 버튼 시그널 메서드
     def set_btn_trigger(self):
         self.btn_login.clicked.connect(lambda state: self.assert_login())
-        self.btn_join.clicked.connect(lambda state: self.assert_join())
+        self.btn_join.clicked.connect(lambda state: self.join_page_btn())
         self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
         self.btn_join_register.clicked.connect(lambda state: self.register_event())
-        self.btn_join_cancel.clicked.connect(lambda state: self.assert_join())
+        self.btn_join_cancel.clicked.connect(lambda state: self.join_page_btn())
         pass
 
-    # =====회원가입==========================================================================================================
-    def assert_join(self):
+    # 화면전환===================================================================================================
+    def login_screen(self):
+        print('들어옴?')
+        self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_1)
+    def widget_game_screen(self):
+        self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_3)
+
+    def join_page_btn(self):
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_2)
+
+    # =====회원가입==========================================================================================================
 
     # 유저 아이디 중복 체크
     def user_name_duplicate_check(self):
@@ -67,7 +75,6 @@ class Screen(QWidget, Ui_frame_damagochi):
         else:
             return False
 
-    #
     def show_label_join_warning(self, text):
         self.label_join_warning.setText(text)
 

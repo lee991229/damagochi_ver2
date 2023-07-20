@@ -31,8 +31,10 @@ class ClientApp:
         self.receive_thread = Thread(target=self.receive_message)
         self.receive_thread.daemon = True
         self.receive_thread.start()
+
     def send_join_id_and_pw_for_join_access(self, join_username, join_pw, join_nickname):
-        client_sand_data = f"{f'join_access{header_split}{join_username}{list_split_1}{join_pw}{list_split_1}{join_nickname}':{self.BUFFER}}".encode(self.FORMAT)
+        client_sand_data = f"{f'join_access{header_split}{join_username}{list_split_1}{join_pw}{list_split_1}{join_nickname}':{self.BUFFER}}".encode(
+            self.FORMAT)
         self.client_socket.send(client_sand_data)
 
     def set_widget(self, widget_):
@@ -55,8 +57,23 @@ class ClientApp:
             response_header = return_result.split(header_split)[0]
             response_substance = return_result.split(header_split)[1]
 
-            if response_header == 'assertu_username':  # 로그인
+            if response_header == 'assertu_username':
                 if response_substance == 'True':
                     self.client_widget.assert_same_id_signal.emit(True)
                 else:
                     self.client_widget.assert_same_id_signal.emit(False)
+
+            elif response_header == 'login':
+                if response_substance == 'False':
+                    self.client_widget.log_in_signal.emit(False)
+                else:
+                    data = response_substance.split(list_split_1)
+                    print(data)
+                    self.user_id, self.username, self.user_pw, self.user_nickname = data
+                    self.client_widget.log_in_signal.emit(True)
+
+            elif response_header == 'join_access':
+                if response_substance == 'True':
+                    self.client_widget.assert_join_signal.emit(True)
+                else:
+                    self.client_widget.assert_join_signal.emit(False)

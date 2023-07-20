@@ -119,11 +119,21 @@ class Server:
                 data = substance.split(list_split_1)
                 print(data)
                 login_name, login_pw = data
-                self.db_conn.user_log_in(login_name, login_pw)
+                result = self.db_conn.user_log_in(login_name, login_pw)
+                # result =
+                user_id, username, user_pw, user_nickname = result
+                print(result, '요거니')
+                print(user_id, username, user_pw, user_nickname, '요거니 2')
+                if result is False:
+                    response_header = f"{f'login{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
+                    client_socket.send(response_header)
+
+                else:
+                    response_header = f"{f'login{header_split}{user_id}{list_split_1}{username}{list_split_1}{user_pw}{list_split_1}{user_nickname}':{self.BUFFER}}".encode(self.FORMAT)
+                    client_socket.send(response_header)
+
 
             elif header == 'assertu_username':  # 아이디 중복
-                print(header)
-                print(substance)
                 join_username = substance
                 result = self.db_conn.assertu_username(join_username)
                 if result is True:
@@ -135,19 +145,18 @@ class Server:
 
             elif header == 'join_access':  # 회원가입
                 data = substance.split(list_split_1)
-                print(data)
                 # join_name, join_pw, join_nickname = data
                 # print(join_name, join_pw, join_nickname)
                 result = self.db_conn.user_sign_up(data)
 
                 if result is False:
-                    response_header = self.join_user.encode(self.FORMAT)
-                    result = response_header + self.dot_encoded
-                    self.send_message(client_socket, result)
+                    response_header = f"{f'join_access{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
+                    client_socket.send(response_header)
+
                 else:
-                    response_header = self.join_user.encode(self.FORMAT)
-                    result = response_header + self.pass_encoded
-                    self.send_message(client_socket, result)
+                    response_header = f"{f'join_access{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
+                    client_socket.send(response_header)
+
         except:
             return False
 

@@ -8,18 +8,19 @@ from PyQt5.QtCore import QPoint, Qt, pyqtSignal
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
 from network.class_client import ClientApp
 from code.front.widget_screen import Screen
-
+from code.front.class_custom_message_box import NoFrameMessageBox
 
 class ClientController(QtWidgets.QWidget):
-
+    log_in_signal = pyqtSignal(bool)
     assert_same_id_signal = pyqtSignal(bool)
-
+    assert_join_signal = pyqtSignal(bool)
     def __init__(self, client_app=ClientApp):
         super().__init__()
         self.client_app = client_app
         self.client_app.set_widget(self)
         self.widget_screen = Screen(self)
         self.valid_duplication_id = None
+
         # 시그날 애밋
         self.initial_trigger_setting()
 
@@ -30,6 +31,17 @@ class ClientController(QtWidgets.QWidget):
     def initial_trigger_setting(self):
         self.valid_duplication_id = False
         self.assert_same_id_signal.connect(self.assert_same_name_res)
+        self.assert_join_signal.connect(self.sign_up_res)
+        self.log_in_signal.connect(self.log_in)
+
+    def log_in(self, return_result: bool):
+        if return_result is True:
+            result = NoFrameMessageBox(self, "성공", "로그인 성공", "about")
+            self.widget_screen.widget_game_screen()
+            return
+        elif return_result is False:
+            return NoFrameMessageBox(self, "실패", "로그인 실패", "about")
+
     def run(self):
         self.widget_screen.show()
 
@@ -43,8 +55,18 @@ class ClientController(QtWidgets.QWidget):
         if event.buttons() == Qt.LeftButton:
             widget.move(event.globalPos() - self.drag_start_position)
             event.accept()
+    # def set_widget_screen_login(self):
+    #     self.widget_screen.widget_screen_login()
 
 # 회원가입=============================================================================
+    def sign_up_res(self, return_result: bool):
+        # todo: 알지?
+        if return_result is True:
+            result = NoFrameMessageBox(self, "성공", "회원가입 성공", "about")
+            self.widget_screen.login_screen()
+            return
+        elif return_result is False:
+            return NoFrameMessageBox(self, "실패", "회원가입 실패", "about")
 
     def assert_same_name_res(self, return_result: bool):
         if return_result is True:
@@ -64,14 +86,13 @@ class ClientController(QtWidgets.QWidget):
     def username_duplicatecheck(self, assert_username):
         self.client_app.send_username_duplicatecheck(assert_username)
 
-        pass
 
     # 회원가입=============================================================================
 
     # 유저가 아이디 비밀번호를 입력하고 로그인버튼 클릭시
     def assert_login_data(self, usr_inp_name, usr_inp_pw):
-        self.client_app.username = usr_inp_name
-        self.client_app.user_pw = usr_inp_pw
+        # self.client_app.username = usr_inp_name
+        # self.client_app.user_pw = usr_inp_pw
         self.client_app.send_login_id_and_pw_for_login_access(usr_inp_name, usr_inp_pw)
         # self.client_app.user_id = None
         # self.client_app.user_nickname = None

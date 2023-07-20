@@ -90,6 +90,7 @@ class DBConnector:
         self.commit_db()
         self.end_conn()
 
+    # 로그인
     def user_log_in(self, login_id, login_pw):
         c = self.start_conn()
         exist_user = c.execute('select * from user where user_name = ? and user_pw = ?',
@@ -99,7 +100,7 @@ class DBConnector:
             print('로그인 성공')
             print(exist_user)
             # login_user_obj = User(*exist_user)
-            # return login_user_obj
+            return exist_user
         else:
             print('아이디 혹은 비밀번호를 잘못 입력했습니다.')
             return False
@@ -119,8 +120,8 @@ class DBConnector:
 
     def assert_same_login_id(self, inserted_id):
         c = self.start_conn()
-
-        username_id = c.execute('select * from user where username = ?', (inserted_id,)).fetchone()
+        print(inserted_id)
+        username_id = c.execute('select * from user where user_name = ?', (inserted_id,)).fetchone()
         if username_id is None:
             print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
             return True
@@ -128,7 +129,8 @@ class DBConnector:
             print('사용 불가능한 아이디 입니다.')  # 사용불가
             return False
 
-    def user_sign_up(self,user_data):
+    # 회원가입
+    def user_sign_up(self, user_data):
         join_name, join_pw, join_nickname = user_data
         useable_id = self.assert_same_login_id(join_name)
         if useable_id is False:
@@ -139,30 +141,29 @@ class DBConnector:
             user_id = 1
         else:
             user_id = last_user_row[0] + 1
-        sign_up_user_obj = User(user_id, insert_id, insert_pw, nickname)
         self.end_conn()
-        sing_up_obj = self.insert_user(sign_up_user_obj)
+        sing_up_obj = self.insert_user(user_id, join_name, join_pw, join_nickname)
         return sing_up_obj
 
-    # def insert_user(self, user_object: User):
-    #     c = self.start_conn()
-    #     user_id = user_object.user_id
-    #     user_name = user_object.username
-    #     password = user_object.password
-    #     nickname = user_object.nickname
-    #     users_id = c.execute('select * from user where user_id = ?', (user_id,)).fetchone()
-    #
-    #     if users_id is None:
-    #         c.execute('insert into user(username, password, nickname) values (?, ?, ?)',
-    #                   (user_name, password, nickname))
-    #         self.commit_db()
-    #         inserted_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
-    #         inserted_user_obj = User(*inserted_user_row)
-    #         self.end_conn()
-    #         return inserted_user_obj
-    #     else:
-    #         updated_user_obj = self.update_user(user_object)
-    #         return updated_user_obj
+    def insert_user(self, user_id, join_name, join_pw, join_nickname):
+        c = self.start_conn()
+        user_id = user_id
+        user_name = join_name
+        password = join_pw
+        nickname = join_nickname
+        users_id = c.execute('select * from user where user_id = ?', (user_id,)).fetchone()
+        if users_id is None:
+            c.execute('insert into user(user_name, user_pw, user_nickname) values (?, ?, ?)',
+                      (user_name, password, nickname))
+            self.commit_db()
+            inserted_user_row = c.execute('select * from user order by user_id desc limit 1').fetchone()
+            # inserted_user_obj = User(*inserted_user_row)
+            self.end_conn()
+            # return inserted_user_obj
+        else:
+            print('pass')
+            # updated_user_obj = self.update_user(user_object)
+            # return updated_user_obj
 
     # def assert_same_login_id(self, inserted_id):
     #     c = self.start_conn()
