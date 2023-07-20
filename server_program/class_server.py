@@ -105,7 +105,6 @@ class Server:
                 del self.clients[notified_socket]
 
     def send_message(self, client_socket: socket, result):
-        print(f"Server SENDED: ({result})")
         client_socket.send(result)
 
     def receive_message(self, client_socket: socket, UserTalkRoom=None):
@@ -117,19 +116,18 @@ class Server:
 
             if header == 'login':  # 로그인
                 data = substance.split(list_split_1)
-                print(data)
                 login_name, login_pw = data
                 result = self.db_conn.user_log_in(login_name, login_pw)
+
                 # result =
-                user_id, username, user_pw, user_nickname = result
-                print(result, '요거니')
-                print(user_id, username, user_pw, user_nickname, '요거니 2')
                 if result is False:
                     response_header = f"{f'login{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     client_socket.send(response_header)
 
                 else:
-                    response_header = f"{f'login{header_split}{user_id}{list_split_1}{username}{list_split_1}{user_pw}{list_split_1}{user_nickname}':{self.BUFFER}}".encode(self.FORMAT)
+                    user_id, username, user_pw, user_nickname = result
+                    response_header = f"{f'login{header_split}{user_id}{list_split_1}{username}{list_split_1}{user_pw}{list_split_1}{user_nickname}':{self.BUFFER}}".encode(
+                        self.FORMAT)
                     client_socket.send(response_header)
 
 
@@ -142,6 +140,25 @@ class Server:
                 elif result is False:
                     response_header = f"{f'assertu_username{header_split}{False}':{self.BUFFER}}".encode(self.FORMAT)
                     client_socket.send(response_header)
+
+            elif header == 'get_user_character':  # 유저 캐릭터 찾기
+                user_id = substance
+                result = self.db_conn.find_user_character(user_id)
+                character_id, _, _ = result
+
+                if result is not None:
+                    response_header = f"{f'get_user_character{header_split}{character_id}':{self.BUFFER}}".encode(
+                        self.FORMAT)
+                    client_socket.send(response_header)
+
+            elif header == 'get_user_character_stat':  # 캐릭터 stat 조회
+                character_id = substance
+                result = self.db_conn.find_character_stat(character_id)
+                character_id, character_hunger, character_affection, character_health, character_exp = result
+                response_header = f"{f'recv_character_stat{header_split}{character_id}{list_split_1}{character_hunger}{list_split_1}{character_affection}{list_split_1}{character_health}{list_split_1}{character_exp}':{self.BUFFER}}".encode(
+                    self.FORMAT)
+                client_socket.send(response_header)
+
 
             elif header == 'join_access':  # 회원가입
                 data = substance.split(list_split_1)

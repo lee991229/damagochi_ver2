@@ -50,8 +50,7 @@ class DBConnector:
     CREATE TABLE "character" (
         "character_id"	INTEGER,
         "user_id"	INTEGER NOT NULL,
-        "character_nickname"	TEXT NOT NULL,
-        "character_exp"	INTEGER NOT NULL,
+        "character_nickname"	TEXT,
         PRIMARY KEY("character_id" AUTOINCREMENT)
     );
     DROP TABLE IF EXISTS character_stat;    
@@ -59,7 +58,8 @@ class DBConnector:
         "character_id"	INTEGER NOT NULL,
         "character_hunger"	INTEGER NOT NULL,
         "character_affection"	INTEGER NOT NULL,
-        "character_health"	INTEGER NOT NULL
+        "character_health"	INTEGER NOT NULL,
+        "character_exp"	INTEGER NOT NULL
     );
     DROP TABLE IF EXISTS inventory;
     CREATE TABLE "inventory" (
@@ -98,15 +98,12 @@ class DBConnector:
         self.end_conn()
         if exist_user is not None:
             print('로그인 성공')
-            print(exist_user)
-            # login_user_obj = User(*exist_user)
             return exist_user
         else:
             print('아이디 혹은 비밀번호를 잘못 입력했습니다.')
             return False
 
     def assertu_username(self, join_username):
-        print('db', join_username)
         c = self.start_conn()
         username_id = c.execute('select * from user where user_name = ?', (join_username,)).fetchone()
         self.end_conn()
@@ -120,7 +117,6 @@ class DBConnector:
 
     def assert_same_login_id(self, inserted_id):
         c = self.start_conn()
-        print(inserted_id)
         username_id = c.execute('select * from user where user_name = ?', (inserted_id,)).fetchone()
         if username_id is None:
             print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
@@ -145,6 +141,94 @@ class DBConnector:
         sing_up_obj = self.insert_user(user_id, join_name, join_pw, join_nickname)
         return sing_up_obj
 
+    # 유저의 캐릭터 조회
+    def find_user_character(self, user_id):
+        c = self.start_conn()
+        character_id = c.execute('select * from character where user_id = ?', (user_id,)).fetchone()
+
+        if character_id is None:
+            result = self.character_sign_up(user_id)
+            print('캐릭터 만듬')
+            return result
+        else:
+            # todo: 만들어 나중에
+            print('캐릭터 있음')
+            return True
+
+    def character_sign_up(self, user_id):
+
+        user_id = user_id
+        c = self.start_conn()
+        last_user_row = c.execute('select * from character order by character_id desc limit 1').fetchone()
+        if last_user_row is None:
+            character_id = 1
+        else:
+            character_id = last_user_row[0] + 1
+        self.end_conn()
+        sing_up_obj = self.insert_character(character_id, user_id)
+        return sing_up_obj
+
+    def insert_character(self, character_id, user_id):
+        c = self.start_conn()
+        user_id = user_id
+        character_id = character_id
+
+
+        users_id2 = c.execute('select * from character where character_id = ?', (character_id,)).fetchone()
+        if users_id2 is None:
+            c.execute('insert into character(character_id, user_id) values (?, ?)',
+                      (character_id, user_id))
+            self.commit_db()
+            inserted_user_row = c.execute('select * from character order by character_id desc limit 1').fetchone()
+            self.end_conn()
+            return inserted_user_row
+        else:
+            print('pass')
+
+    # 캐릭터 스탯 찾기
+    def find_character_stat(self, character_id):
+        c = self.start_conn()
+        character_stat = c.execute('select * from character_stat where character_id = ?', (character_id,)).fetchone()
+        if character_stat is None:
+            result = self.insert_character_stat(character_id)
+            return result
+        else:
+            # todo: 만들어 나중에
+            return True
+
+    # def character_stat_sign_up(self, character_id):
+    #     print(character_id)
+    #
+    #     character_id = character_id
+    #     c = self.start_conn()
+    #     last_user_row = c.execute('select * from character order by character_id desc limit 1').fetchone()
+    #     # if last_user_row is None:
+    #     #     character_id = 1
+    #     # else:
+    #     #     character_id = last_user_row[0] + 1
+    #     self.end_conn()
+    #     sing_up_obj = self.insert_character_stat(character_id)
+    #     print(sing_up_obj)
+    #     return sing_up_obj
+
+    def insert_character_stat(self, character_id):
+
+        character_id = character_id
+        c = self.start_conn()
+        users_id2 = c.execute('select * from character_stat where character_id = ?', (character_id,)).fetchone()
+
+        if users_id2 is None:
+            c.execute(
+                'insert into character_stat(character_id, character_hunger, character_affection, character_health, character_exp) values (?, ?, ?, ?, ?)',
+                (character_id, 50, 0, 100, 0))
+            self.commit_db()
+            inserted_user_row = c.execute('select * from character_stat where character_id = ?', (character_id,)).fetchone()
+            self.end_conn()
+            return inserted_user_row
+        else:
+            print('pass')
+
+    # DB에 유저 추가
     def insert_user(self, user_id, join_name, join_pw, join_nickname):
         c = self.start_conn()
         user_id = user_id

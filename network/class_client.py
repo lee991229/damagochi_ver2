@@ -27,10 +27,28 @@ class ClientApp:
         self.username = None
         self.user_nickname = None
 
+        # 로그인한 유저의 캐릭터 정보 저장
+        self.user_character_id = None
+        self.user_character_exp = None
+        self.user_character_id = None
+        self.user_character_hunger = None
+        self.user_character_affection = None
+        self.user_character_health = None
+        self.user_character_exp = None
         # 클라이언트 recv 스레드
         self.receive_thread = Thread(target=self.receive_message)
         self.receive_thread.daemon = True
         self.receive_thread.start()
+
+    def send_get_user_character(self):
+        client_sand_data = f"{f'get_user_character{header_split}{self.user_id}':{self.BUFFER}}".encode(
+            self.FORMAT)
+        self.client_socket.send(client_sand_data)
+
+    def send_get_user_character_stat(self):
+        client_sand_data = f"{f'get_user_character_stat{header_split}{self.user_character_id}':{self.BUFFER}}".encode(
+            self.FORMAT)
+        self.client_socket.send(client_sand_data)
 
     def send_join_id_and_pw_for_join_access(self, join_username, join_pw, join_nickname):
         client_sand_data = f"{f'join_access{header_split}{join_username}{list_split_1}{join_pw}{list_split_1}{join_nickname}':{self.BUFFER}}".encode(
@@ -41,7 +59,6 @@ class ClientApp:
         self.client_widget = widget_
 
     def send_username_duplicatecheck(self, join_inp_username):
-        print(join_inp_username, '3')
         client_sand_data = f"{f'assertu_username{header_split}{join_inp_username}':{self.BUFFER}}".encode(self.FORMAT)
         self.client_socket.send(client_sand_data)
 
@@ -53,7 +70,6 @@ class ClientApp:
     def receive_message(self):
         while True:
             return_result = self.client_socket.recv(self.BUFFER).decode(self.FORMAT).strip()
-            print(return_result)
             response_header = return_result.split(header_split)[0]
             response_substance = return_result.split(header_split)[1]
 
@@ -68,7 +84,6 @@ class ClientApp:
                     self.client_widget.log_in_signal.emit(False)
                 else:
                     data = response_substance.split(list_split_1)
-                    print(data)
                     self.user_id, self.username, self.user_pw, self.user_nickname = data
                     self.client_widget.log_in_signal.emit(True)
 
@@ -77,3 +92,15 @@ class ClientApp:
                     self.client_widget.assert_join_signal.emit(True)
                 else:
                     self.client_widget.assert_join_signal.emit(False)
+
+            elif response_header == 'recv_character_stat':
+                response_substance = response_substance.split(list_split_1)
+                self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp = response_substance
+
+            elif response_header == 'get_user_character':
+                self.user_character_id = response_substance
+                self.send_get_user_character_stat()
+                # if response_substance == 'True':
+                #     self.client_widget.assert_join_signal.emit(True)
+                # else:
+                #     self.client_widget.assert_join_signal.emit(False)

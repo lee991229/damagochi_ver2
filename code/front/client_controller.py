@@ -28,19 +28,14 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
+
+        self.timer_list = list()
     def initial_trigger_setting(self):
         self.valid_duplication_id = False
         self.assert_same_id_signal.connect(self.assert_same_name_res)
         self.assert_join_signal.connect(self.sign_up_res)
         self.log_in_signal.connect(self.log_in)
 
-    def log_in(self, return_result: bool):
-        if return_result is True:
-            result = NoFrameMessageBox(self, "성공", "로그인 성공", "about")
-            self.widget_screen.widget_game_screen()
-            return
-        elif return_result is False:
-            return NoFrameMessageBox(self, "실패", "로그인 실패", "about")
 
     def run(self):
         self.widget_screen.show()
@@ -57,10 +52,11 @@ class ClientController(QtWidgets.QWidget):
             event.accept()
     # def set_widget_screen_login(self):
     #     self.widget_screen.widget_screen_login()
+# 게임화면=============================================================================
 
 # 회원가입=============================================================================
+    #회원가입 승인결과
     def sign_up_res(self, return_result: bool):
-        # todo: 알지?
         if return_result is True:
             result = NoFrameMessageBox(self, "성공", "회원가입 성공", "about")
             self.widget_screen.login_screen()
@@ -68,6 +64,7 @@ class ClientController(QtWidgets.QWidget):
         elif return_result is False:
             return NoFrameMessageBox(self, "실패", "회원가입 실패", "about")
 
+    # 회원가입 아이디 중복확인
     def assert_same_name_res(self, return_result: bool):
         if return_result is True:
             self.valid_duplication_id = True
@@ -76,6 +73,7 @@ class ClientController(QtWidgets.QWidget):
         elif return_result is False:
             self.widget_screen.user_name_duplicate_check_true("(사용불가)ID:")
             # return NoFrameMessageBox(self, "불가능", "중복 아이디, 새로 쓰기", "about")
+    # 회원가입 승인요청
     def join_access(self):
         join_username = self.widget_screen.lineEdit_join_username.text()
         join_pw = self.widget_screen.lineedit_join_pw_1.text()
@@ -88,14 +86,43 @@ class ClientController(QtWidgets.QWidget):
 
 
     # 회원가입=============================================================================
+    # 로그인 ==============================================================================
 
     # 유저가 아이디 비밀번호를 입력하고 로그인버튼 클릭시
     def assert_login_data(self, usr_inp_name, usr_inp_pw):
-        # self.client_app.username = usr_inp_name
-        # self.client_app.user_pw = usr_inp_pw
         self.client_app.send_login_id_and_pw_for_login_access(usr_inp_name, usr_inp_pw)
-        # self.client_app.user_id = None
-        # self.client_app.user_nickname = None
+
+    def make_timer(time):
+        t = QTimer()
+        t.setInterval(time)
+        return t
+    def set_game_timer(self):
+        timer_name = [5000, 5000, 5000, ]
+        for timer,time in timer_name:
+            print(timer,time)
+            timer = make_timer(time=time)
+        timer_list.append()
+    def start_timer(self):
+
+
+    # 로그인 성공
+    def log_in(self, return_result: bool):
+        if return_result is True:
+            result = NoFrameMessageBox(self, "성공", "로그인 성공", "about")
+            #todo: 캐릭터 조회,생성
+            self.get_user_character()
+            self.set_game_timer()
+            # # 캐릭터 stat정보 불러오기
+            # self.get_user_character_stat()
+            self.widget_screen.widget_game_screen()
+            return
+        elif return_result is False:
+            return NoFrameMessageBox(self, "실패", "로그인 실패", "about")
+    def get_user_character(self):
+        self.client_app.send_get_user_character()
+    # def get_user_character_stat(self):
+    #     self.client_app.send_get_user_character_stat()
+    # 로그인 ==============================================================================
 
 # if __name__ == '__main__':
 #     app = QApplication(sys.argv)

@@ -28,20 +28,24 @@ class Screen(QWidget, Ui_frame_damagochi):
     # 버튼 시그널 메서드
     def set_btn_trigger(self):
         self.btn_login.clicked.connect(lambda state: self.assert_login())
-        self.btn_join.clicked.connect(lambda state: self.join_page_btn())
+        self.btn_join.clicked.connect(lambda state: self.join_screen())
         self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
         self.btn_join_register.clicked.connect(lambda state: self.register_event())
-        self.btn_join_cancel.clicked.connect(lambda state: self.join_page_btn())
+        self.btn_join_cancel.clicked.connect(lambda state: self.login_screen())
         pass
 
-    # 화면전환===================================================================================================
+    # 화면 전환===================================================================================================
+    # 로그인 화면 전환
     def login_screen(self):
-        print('들어옴?')
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_1)
+
+    # 게임 화면 전환
     def widget_game_screen(self):
+
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_3)
 
-    def join_page_btn(self):
+    # 회원 가입 화면 전환
+    def join_screen(self):
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_2)
 
     # =====회원가입==========================================================================================================
@@ -107,3 +111,8 @@ class Screen(QWidget, Ui_frame_damagochi):
         #     return
 
         self.client_controller.assert_login_data(usr_inp_name, usr_inp_pw)
+# 게임화면=============================================================================
+    def set_character_progressBar(self):
+
+        self.progressBar.setValue()
+        self.progressBar_2.setValue()

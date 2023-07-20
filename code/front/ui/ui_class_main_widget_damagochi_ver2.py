@@ -24,7 +24,7 @@ class Ui_frame_damagochi(object):
 "\n"
 "}\n"
 "#frame{\n"
-"    background-color: rgb(170, 170, 255);\n"
+"    background-color: #FFF6BF;\n"
 "    border-radius: 150px;\n"
 "}\n"
 "#widget{\n"
@@ -38,9 +38,9 @@ class Ui_frame_damagochi(object):
 "    border-top-right-radius: 50px;\n"
 "    background-color: rgb(255, 255, 255);\n"
 "}\n"
-"#stackedwidget_page_1,#stackedwidget_page_2\n"
+"#stackedwidget_page_1,#stackedwidget_page_2,#stackedwidget_page_3,#stackedwidget_page_4\n"
 "{\n"
-"    background-color: rgb(170, 170, 255);\n"
+"    background-color: #FFF6BF;\n"
 "}\n"
 "\n"
 "#widget_8{\n"
@@ -53,6 +53,9 @@ class Ui_frame_damagochi(object):
 "#widget_10{\n"
 "    background-color: rgb(255, 255, 255);\n"
 "}\n"
+"#widget_15{\n"
+"    background-color: rgb(255, 255, 255);\n"
+"}\n"
 "\n"
 "#widget_11{\n"
 "    background-color: rgb(255, 255, 255);\n"
@@ -63,6 +66,17 @@ class Ui_frame_damagochi(object):
 "    background-color: rgb(255, 255, 255);\n"
 "    border-top-left-radius: 50px; \n"
 "    border-top-right-radius: 50px;\n"
+"}\n"
+"\n"
+"#widget_14{\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-top-left-radius: 50px; \n"
+"    border-top-right-radius: 50px;\n"
+"}\n"
+"#widget_13{\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    border-bottom-left-radius: 50px;\n"
+"    border-bottom-right-radius: 50px;\n"
 "}")
         self.verticalLayout = QtWidgets.QVBoxLayout(frame_damagochi)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -362,28 +376,112 @@ class Ui_frame_damagochi(object):
         self.stackedwidget_page_3 = QtWidgets.QWidget()
         self.stackedwidget_page_3.setObjectName("stackedwidget_page_3")
         self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.stackedwidget_page_3)
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
         self.widget_16 = QtWidgets.QWidget(self.stackedwidget_page_3)
         self.widget_16.setObjectName("widget_16")
         self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.widget_16)
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_13.setSpacing(0)
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.widget_14 = QtWidgets.QWidget(self.widget_16)
+        self.widget_14.setMaximumSize(QtCore.QSize(16777215, 100))
         self.widget_14.setObjectName("widget_14")
-        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.widget_14)
-        self.verticalLayout_16.setObjectName("verticalLayout_16")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget_14)
+        self.horizontalLayout_2.setContentsMargins(25, 9, 25, 0)
+        self.horizontalLayout_2.setSpacing(0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.widget_3 = QtWidgets.QWidget(self.widget_14)
+        self.widget_3.setMinimumSize(QtCore.QSize(400, 0))
+        self.widget_3.setObjectName("widget_3")
+        self.gridLayout_6 = QtWidgets.QGridLayout(self.widget_3)
+        self.gridLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_6.setSpacing(0)
+        self.gridLayout_6.setObjectName("gridLayout_6")
+        self.label_11 = QtWidgets.QLabel(self.widget_3)
+        self.label_11.setObjectName("label_11")
+        self.gridLayout_6.addWidget(self.label_11, 1, 0, 1, 1)
+        self.label_12 = QtWidgets.QLabel(self.widget_3)
+        self.label_12.setObjectName("label_12")
+        self.gridLayout_6.addWidget(self.label_12, 2, 0, 1, 1)
+        self.horizontalLayout_2.addWidget(self.widget_3)
         spacerItem13 = QtWidgets.QSpacerItem(20, 119, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_16.addItem(spacerItem13)
+        self.horizontalLayout_2.addItem(spacerItem13)
+        self.pushButton = QtWidgets.QPushButton(self.widget_14)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
+        self.pushButton.setSizePolicy(sizePolicy)
+        self.pushButton.setMaximumSize(QtCore.QSize(70, 70))
+        self.pushButton.setObjectName("pushButton")
+        self.horizontalLayout_2.addWidget(self.pushButton)
         self.verticalLayout_13.addWidget(self.widget_14)
         self.widget_15 = QtWidgets.QWidget(self.widget_16)
         self.widget_15.setMinimumSize(QtCore.QSize(0, 200))
         self.widget_15.setObjectName("widget_15")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.widget_15)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.gridLayout_3 = QtWidgets.QGridLayout()
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.widget_2 = QtWidgets.QWidget(self.widget_15)
+        self.widget_2.setObjectName("widget_2")
+        self.label_13 = QtWidgets.QLabel(self.widget_2)
+        self.label_13.setGeometry(QtCore.QRect(200, 80, 221, 261))
+        self.label_13.setText("")
+        self.label_13.setPixmap(QtGui.QPixmap(":/newPrefix/다운로드파일＿20230612＿162417.jpg"))
+        self.label_13.setScaledContents(True)
+        self.label_13.setObjectName("label_13")
+        self.gridLayout_3.addWidget(self.widget_2, 0, 0, 1, 1)
+        self.verticalLayout_6.addLayout(self.gridLayout_3)
         self.verticalLayout_13.addWidget(self.widget_15)
         self.widget_13 = QtWidgets.QWidget(self.widget_16)
+        self.widget_13.setMaximumSize(QtCore.QSize(199999, 80))
         self.widget_13.setObjectName("widget_13")
-        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.widget_13)
-        self.verticalLayout_17.setObjectName("verticalLayout_17")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget_13)
+        self.horizontalLayout_3.setContentsMargins(25, -1, -1, -1)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.widget_4 = QtWidgets.QWidget(self.widget_13)
+        self.widget_4.setObjectName("widget_4")
+        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.widget_4)
+        self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_16.setSpacing(0)
+        self.verticalLayout_16.setObjectName("verticalLayout_16")
+        self.gridLayout_4 = QtWidgets.QGridLayout()
+        self.gridLayout_4.setObjectName("gridLayout_4")
+        self.progressBar_2 = QtWidgets.QProgressBar(self.widget_4)
+        self.progressBar_2.setProperty("value", 24)
+        self.progressBar_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.progressBar_2.setObjectName("progressBar_2")
+        self.gridLayout_4.addWidget(self.progressBar_2, 1, 1, 1, 1)
+        self.label_7 = QtWidgets.QLabel(self.widget_4)
+        self.label_7.setObjectName("label_7")
+        self.gridLayout_4.addWidget(self.label_7, 0, 0, 1, 1)
+        self.label_9 = QtWidgets.QLabel(self.widget_4)
+        self.label_9.setObjectName("label_9")
+        self.gridLayout_4.addWidget(self.label_9, 1, 0, 1, 1)
+        self.progressBar = QtWidgets.QProgressBar(self.widget_4)
+        self.progressBar.setProperty("value", 24)
+        self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
+        self.progressBar.setObjectName("progressBar")
+        self.gridLayout_4.addWidget(self.progressBar, 0, 1, 1, 1)
+        self.label_10 = QtWidgets.QLabel(self.widget_4)
+        self.label_10.setMinimumSize(QtCore.QSize(56, 56))
+        self.label_10.setMaximumSize(QtCore.QSize(56, 56))
+        font = QtGui.QFont()
+        font.setFamily("나눔고딕")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.gridLayout_4.addWidget(self.label_10, 0, 2, 2, 1)
+        self.verticalLayout_16.addLayout(self.gridLayout_4)
+        self.horizontalLayout_3.addWidget(self.widget_4)
         spacerItem14 = QtWidgets.QSpacerItem(20, 119, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_17.addItem(spacerItem14)
+        self.horizontalLayout_3.addItem(spacerItem14)
         self.verticalLayout_13.addWidget(self.widget_13)
         self.verticalLayout_12.addWidget(self.widget_16)
         spacerItem15 = QtWidgets.QSpacerItem(20, 15, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
@@ -431,11 +529,11 @@ class Ui_frame_damagochi(object):
         self.horizontalLayout_10.addWidget(self.pushButton_7)
         self.verticalLayout_12.addWidget(self.frame_btns_3)
         self.stackedWidget_damagochi.addWidget(self.stackedwidget_page_3)
-        self.page_2 = QtWidgets.QWidget()
-        self.page_2.setObjectName("page_2")
-        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.page_2)
+        self.stackedwidget_page_4 = QtWidgets.QWidget()
+        self.stackedwidget_page_4.setObjectName("stackedwidget_page_4")
+        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.stackedwidget_page_4)
         self.verticalLayout_14.setObjectName("verticalLayout_14")
-        self.widget_17 = QtWidgets.QWidget(self.page_2)
+        self.widget_17 = QtWidgets.QWidget(self.stackedwidget_page_4)
         self.widget_17.setObjectName("widget_17")
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.widget_17)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
@@ -463,7 +561,7 @@ class Ui_frame_damagochi(object):
         spacerItem17 = QtWidgets.QSpacerItem(192, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_11.addItem(spacerItem17)
         self.verticalLayout_14.addWidget(self.widget_17)
-        self.stackedWidget_damagochi.addWidget(self.page_2)
+        self.stackedWidget_damagochi.addWidget(self.stackedwidget_page_4)
         self.verticalLayout_7.addWidget(self.stackedWidget_damagochi)
         spacerItem18 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout_7.addItem(spacerItem18)
@@ -490,10 +588,16 @@ class Ui_frame_damagochi(object):
         self.label_2.setText(_translate("frame_damagochi", "비밀번호 입력:"))
         self.btn_join_register.setText(_translate("frame_damagochi", "가입 요청"))
         self.btn_join_cancel.setText(_translate("frame_damagochi", "뒤로가기"))
-        self.pushButton_6.setText(_translate("frame_damagochi", "회원가입"))
-        self.pushButton_8.setText(_translate("frame_damagochi", "PushButton"))
-        self.pushButton_9.setText(_translate("frame_damagochi", "PushButton"))
-        self.pushButton_7.setText(_translate("frame_damagochi", "로그인"))
+        self.label_11.setText(_translate("frame_damagochi", "유저이름"))
+        self.label_12.setText(_translate("frame_damagochi", "캐릭터 레벨"))
+        self.pushButton.setText(_translate("frame_damagochi", "메뉴버튼"))
+        self.label_7.setText(_translate("frame_damagochi", "배고픔"))
+        self.label_9.setText(_translate("frame_damagochi", "애정"))
+        self.label_10.setText(_translate("frame_damagochi", "기분"))
+        self.pushButton_6.setText(_translate("frame_damagochi", "상점"))
+        self.pushButton_8.setText(_translate("frame_damagochi", "음식"))
+        self.pushButton_9.setText(_translate("frame_damagochi", "놀기"))
+        self.pushButton_7.setText(_translate("frame_damagochi", "씻기"))
 from code.front.ui import my_qrc_rc
 
 

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>다운로드파일＿20230612＿162417.jpg</file>
     <file>누끼 마멧.png</file>
   </qresource>
 </RCC>
