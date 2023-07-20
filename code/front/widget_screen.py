@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-from code.front.method_file.login_screen_method import Login
+
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
 
 

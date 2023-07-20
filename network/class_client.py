@@ -10,6 +10,7 @@ list_split_2 = chr(3)
 
 
 class ClientApp:
+
     HOST = '127.0.0.12'
     PORT = 9999
     BUFFER = 50000
@@ -35,6 +36,7 @@ class ClientApp:
         self.user_character_affection = None
         self.user_character_health = None
         self.user_character_exp = None
+
         # 클라이언트 recv 스레드
         self.receive_thread = Thread(target=self.receive_message)
         self.receive_thread.daemon = True
@@ -96,7 +98,7 @@ class ClientApp:
             elif response_header == 'recv_character_stat':
                 response_substance = response_substance.split(list_split_1)
                 self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp = response_substance
-
+                print(self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp)
             elif response_header == 'get_user_character':
                 self.user_character_id = response_substance
                 self.send_get_user_character_stat()
