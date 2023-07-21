@@ -13,7 +13,7 @@ class ClientApp:
 
     HOST = '127.0.0.12'
     PORT = 9999
-    BUFFER = 50000
+    BUFFER = 5000
     FORMAT = "utf-8"
     HEADER_LENGTH = 30
 
@@ -37,11 +37,18 @@ class ClientApp:
         self.user_character_health = None
         self.user_character_exp = None
 
+        #상점 아이템 리스트
+        self.shop_items_list = None
+
         # 클라이언트 recv 스레드
         self.receive_thread = Thread(target=self.receive_message)
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
+    def send_get_shop_item_list(self):
+        client_sand_data = f"{f'get_shop_item_list{header_split}':{self.BUFFER}}".encode(
+            self.FORMAT)
+        self.client_socket.send(client_sand_data)
     def send_get_user_character(self):
         client_sand_data = f"{f'get_user_character{header_split}{self.user_id}':{self.BUFFER}}".encode(
             self.FORMAT)
@@ -95,10 +102,21 @@ class ClientApp:
                 else:
                     self.client_widget.assert_join_signal.emit(False)
 
+            # 상점아이템 목록 받기
+            elif response_header == 'recv_shop_item_list':
+                response_substance = eval(response_substance)
+                self.shop_items_list = response_substance
+                self.client_widget.get_item_list_signal.emit(self.shop_items_list)
+                print(response_substance, '여기는 클라이언트')
+
+
             elif response_header == 'recv_character_stat':
+                response_substance_list = list()
                 response_substance = response_substance.split(list_split_1)
-                self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp = response_substance
-                print(self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp)
+                for i in response_substance:
+                    response_substance_list.append(int(i))
+                self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp = response_substance_list
+                self.client_widget.set_progressBar.emit()
             elif response_header == 'get_user_character':
                 self.user_character_id = response_substance
                 self.send_get_user_character_stat()

@@ -17,7 +17,8 @@ class ClientController(QtWidgets.QWidget):
     log_in_signal = pyqtSignal(bool)
     assert_same_id_signal = pyqtSignal(bool)
     assert_join_signal = pyqtSignal(bool)
-
+    set_progressBar = pyqtSignal()
+    get_item_list_signal = pyqtSignal(list)
     def __init__(self, client_app=ClientApp):
         super().__init__()
         self.client_app = client_app
@@ -33,13 +34,17 @@ class ClientController(QtWidgets.QWidget):
         self.list_widget_geometry_x = None
         self.list_widget_geometry_y = None
         self.drag_start_position = QPoint(0, 0)
-
+    # 시그날
     def initial_trigger_setting(self):
         self.valid_duplication_id = False
         self.assert_same_id_signal.connect(self.assert_same_name_res)
         self.assert_join_signal.connect(self.sign_up_res)
         self.log_in_signal.connect(self.log_in)
-
+        self.set_progressBar.connect(self.set_screen_character_progressBar)
+        self.get_item_list_signal.connect(self.set_shop_item_list)
+    def set_shop_item_list(self, items_list):
+        print(items_list, '여기는 시그날 받고옴')
+        self.widget_screen.set_shop_widget(items_list)
     def run(self):
         self.widget_screen.show()
 
@@ -56,7 +61,46 @@ class ClientController(QtWidgets.QWidget):
 
     # def set_widget_screen_login(self):
     #     self.widget_screen.widget_screen_login()
+
     # 게임화면=============================================================================
+    def get_shop_item_list(self):
+        self.client_app.send_get_shop_item_list()
+    def set_game_timer(self):
+        self.timer.timer1.start()
+
+    def character_timer_event(self):
+
+        self.timer_event_character_hunger() # 배고픔 수치 줄어듬
+
+        # 애정도 수치 줄어듬
+        if self.client_app.user_character_hunger <= 20:
+            self.timer_event_character_affection()
+        # 건강 수치 줄어듬
+        if self.client_app.user_character_hunger <= 0 and self.client_app.user_character_affection <= 20:
+            self.timer_event_character_health()
+        self.set_screen_character_progressBar()
+    def timer_event_character_hunger(self):
+        self.client_app.user_character_hunger -= random.randint(1, 5)
+        if self.client_app.user_character_hunger < 0:
+            self.client_app.user_character_hunger = 0
+        print('배가 고파져',  self.client_app.user_character_hunger)
+
+    def timer_event_character_affection(self):
+        self.client_app.user_character_affection -= random.randint(1, 5)
+        if self.client_app.user_character_affection < 0:
+            self.client_app.user_character_affection = 0
+        print('배가고파 애정도가 떨어져', self.client_app.user_character_affection)
+    def timer_event_character_health(self):
+        self.client_app.user_character_health -= random.randint(1, 5)
+        if self.client_app.user_character_health < 0:
+            self.client_app.user_character_health = 0
+        print('배고프고 애정도도 낮아서 건강이 나빠져',self.client_app.user_character_health)
+
+    def set_screen_character_progressBar(self):
+        bar1 = self.client_app.user_character_hunger
+        bar2 = self.client_app.user_character_affection
+        self.widget_screen.set_character_progressBar(bar1, bar2)
+
 
     # 회원가입=============================================================================
     # 회원가입 승인결과
@@ -96,21 +140,6 @@ class ClientController(QtWidgets.QWidget):
     def assert_login_data(self, usr_inp_name, usr_inp_pw):
         self.client_app.send_login_id_and_pw_for_login_access(usr_inp_name, usr_inp_pw)
 
-    def set_game_timer(self):
-        self.timer.timer1.start()
-
-    def character_timer_event(self):
-        print('타이머 돌아가욧')
-        self.timer_event_character_hunger()
-        # if self.client_app.user_character_hunger <= 20:
-        #     self.client_app.user_character_affection =
-        # if self.client_app.user_character_hunger <= 0 and self.client_app.user_character_affection <= 20:
-        #     self.client_app.user_character_health =
-
-    def timer_event_character_hunger(self):
-        character_hunger = int(self.client_app.user_character_hunger)
-        self.client_app.user_character_hunger = character_hunger - random.randint(1, 5)
-        print(self.client_app.user_character_hunger)
 
     # 로그인 성공
     def log_in(self, return_result: bool):
@@ -131,6 +160,7 @@ class ClientController(QtWidgets.QWidget):
     # def get_user_character_stat(self):
     #     self.client_app.send_get_user_character_stat()
     # 로그인 ==============================================================================
+
 
 # if __name__ == '__main__':
 #     app = QApplication(sys.argv)

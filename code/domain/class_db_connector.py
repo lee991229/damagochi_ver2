@@ -89,7 +89,16 @@ class DBConnector:
     """)
         self.commit_db()
         self.end_conn()
-
+    def find_all_shop_item(self):
+        c = self.start_conn()
+        item_data = c.execute('select * from item_list').fetchall()
+        if item_data is None:
+            return None
+            # all_user_obj_list = list()
+            # for row_user in item_data:
+            #     all_user_obj_list.append(User(*row_user))
+        self.end_conn()
+        return item_data
     # 로그인
     def user_log_in(self, login_id, login_pw):
         c = self.start_conn()
@@ -173,7 +182,6 @@ class DBConnector:
         user_id = user_id
         character_id = character_id
 
-
         users_id2 = c.execute('select * from character where character_id = ?', (character_id,)).fetchone()
         if users_id2 is None:
             c.execute('insert into character(character_id, user_id) values (?, ?)',
@@ -196,21 +204,6 @@ class DBConnector:
             # todo: 만들어 나중에
             return True
 
-    # def character_stat_sign_up(self, character_id):
-    #     print(character_id)
-    #
-    #     character_id = character_id
-    #     c = self.start_conn()
-    #     last_user_row = c.execute('select * from character order by character_id desc limit 1').fetchone()
-    #     # if last_user_row is None:
-    #     #     character_id = 1
-    #     # else:
-    #     #     character_id = last_user_row[0] + 1
-    #     self.end_conn()
-    #     sing_up_obj = self.insert_character_stat(character_id)
-    #     print(sing_up_obj)
-    #     return sing_up_obj
-
     def insert_character_stat(self, character_id):
 
         character_id = character_id
@@ -222,7 +215,8 @@ class DBConnector:
                 'insert into character_stat(character_id, character_hunger, character_affection, character_health, character_exp) values (?, ?, ?, ?, ?)',
                 (character_id, 50, 0, 100, 0))
             self.commit_db()
-            inserted_user_row = c.execute('select * from character_stat where character_id = ?', (character_id,)).fetchone()
+            inserted_user_row = c.execute('select * from character_stat where character_id = ?',
+                                          (character_id,)).fetchone()
             self.end_conn()
             return inserted_user_row
         else:
@@ -249,6 +243,32 @@ class DBConnector:
             # updated_user_obj = self.update_user(user_object)
             # return updated_user_obj
 
+    # 아이템 db추가
+    def item_sign_up(self, item_info_list):
+        print(item_info_list)
+        item_name, hunger, affection, health, exp = item_info_list
+        c = self.start_conn()
+        last_user_row = c.execute('select * from item_list order by item_id desc limit 1').fetchone()
+        if last_user_row is None:
+            item_id = 1
+        else:
+            item_id = last_user_row[0] + 1
+        self.end_conn()
+        self.insert_item(item_id, item_name, hunger, affection, health, exp)
+        # return sing_up_obj
+
+    def insert_item(self, item_id, item_name, hunger, affection, health, exp):
+        c = self.start_conn()
+        users_id2 = c.execute('select * from item_list where item_id = ?', (item_id,)).fetchone()
+        if users_id2 is None:
+            c.execute('insert into item_list(item_id, item_name, hunger, affection, health, exp) values (?, ?, ?, ?, ?, ?)',
+                      (item_id, item_name, hunger, affection, health, exp))
+            self.commit_db()
+            # inserted_user_row = c.execute('select * from item_list order by item_id desc limit 1').fetchone()
+            self.end_conn()
+            # return inserted_user_row
+        else:
+            print('pass')
     # def assert_same_login_id(self, inserted_id):
     #     c = self.start_conn()
     #

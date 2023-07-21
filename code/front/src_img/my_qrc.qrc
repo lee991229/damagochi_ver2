@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>mon1.png</file>
+    <file>mdB4BnfvMPx99B1zL0rnNQSV5WFh53Zy2CAq482I_mPNTaJHAephagdt-jUVPSQJ-tLTpb5JqtPb4nGsVRhX6w.webp</file>
     <file>다운로드파일＿20230612＿162417.jpg</file>
     <file>누끼 마멧.png</file>
   </qresource>

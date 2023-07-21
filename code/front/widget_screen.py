@@ -1,14 +1,16 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
-
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
+from code.front.widget_shop_item import shop_widget
 
 
 class Screen(QWidget, Ui_frame_damagochi):
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
+
+        self.shop_widget = shop_widget()
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.client_controller = client_controller
         self.set_btn_trigger()  # 버튼 시그널 받는 메서드
@@ -32,6 +34,9 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
         self.btn_join_register.clicked.connect(lambda state: self.register_event())
         self.btn_join_cancel.clicked.connect(lambda state: self.login_screen())
+        # 게임 화면 버튼
+        self.btn_shop.clicked.connect(lambda state: (self.shop_screen(), self.client_controller.get_shop_item_list()))
+
         pass
 
     # 화면 전환===================================================================================================
@@ -47,6 +52,9 @@ class Screen(QWidget, Ui_frame_damagochi):
     # 회원 가입 화면 전환
     def join_screen(self):
         self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_2)
+
+    def shop_screen(self):
+        self.stackedWidget_damagochi.setCurrentWidget(self.stackedwidget_page_4)
 
     # =====회원가입==========================================================================================================
 
@@ -103,7 +111,7 @@ class Screen(QWidget, Ui_frame_damagochi):
     def assert_login(self):
         usr_inp_name = self.line_edit_id.text()
         usr_inp_pw = self.line_edit_pw.text()
-        # if len(usr_inp_nick) == 0:  # 아이디 칸이 비어 있거나 잘못 적었을때
+        # if len(usr_inp_name) == 0:  # 아이디 칸이 비어 있거나 잘못 적었을때
         #     self.no_input_id()
         #     return
         # elif len(usr_inp_pw) == 0:  # 비밀 번호 칸이 비어 있거나 잘못 적었을때
@@ -111,8 +119,11 @@ class Screen(QWidget, Ui_frame_damagochi):
         #     return
 
         self.client_controller.assert_login_data(usr_inp_name, usr_inp_pw)
-# 게임화면=============================================================================
-    def set_character_progressBar(self):
 
-        self.progressBar.setValue()
-        self.progressBar_2.setValue()
+    # 게임화면=============================================================================
+    def set_character_progressBar(self, bar1, bar2):
+        self.progressBar.setValue(bar1)
+        self.progressBar_2.setValue(bar2)
+
+    def set_shop_widget(self, items_list):
+        print(items_list, '여긴 스크린 클래스')

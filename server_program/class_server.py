@@ -1,3 +1,4 @@
+import json
 import os
 from multiprocessing import Process
 from socket import *
@@ -19,10 +20,9 @@ list_split_2 = chr(3)
 class Server:
     HOST = '127.0.0.12'
     PORT = 9999
-    BUFFER = 50000
+    BUFFER = 5000
     FORMAT = "utf-8"
     HEADER_LENGTH = 30
-
 
     def __init__(self, db_conn: DBConnector):
         # 서버 소켓 설정
@@ -99,7 +99,6 @@ class Server:
             decode_msg = recv_message.decode(self.FORMAT).strip()
             header = decode_msg.split(header_split)[0]
             substance = decode_msg.split(header_split)[1]
-
             if header == 'login':  # 로그인
                 data = substance.split(list_split_1)
                 login_name, login_pw = data
@@ -148,8 +147,6 @@ class Server:
 
             elif header == 'join_access':  # 회원가입
                 data = substance.split(list_split_1)
-                # join_name, join_pw, join_nickname = data
-                # print(join_name, join_pw, join_nickname)
                 result = self.db_conn.user_sign_up(data)
 
                 if result is False:
@@ -160,6 +157,13 @@ class Server:
                     response_header = f"{f'join_access{header_split}{True}':{self.BUFFER}}".encode(self.FORMAT)
                     client_socket.send(response_header)
 
+            elif header == 'get_shop_item_list':  # 상점 아이템 목록 조회
+                result = self.db_conn.find_all_shop_item()
+                items = json.dumps(result)
+                message = f"recv_shop_item_list{header_split}{items}"
+                client_socket.send(bytes(message, "UTF-8"))
+
+
         except:
             return False
 
@@ -167,4 +171,3 @@ class Server:
         header_msg = f"{header:<{self.HEADER_LENGTH}}".encode(self.FORMAT)
         data_msg = f"{data:<{self.BUFFER - self.HEADER_LENGTH}}".encode(self.FORMAT)
         return header_msg + data_msg
-
