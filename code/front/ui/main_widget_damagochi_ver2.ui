@@ -1601,7 +1601,6 @@
  </widget>
  <resources>
   <include location="../src_img/my_qrc.qrc"/>
-  <include location="../../../../../../Users/KDT114/Desktop/damagochi_ver2/code/front/src_img/my_qrc.qrc"/>
  </resources>
  <connections/>
 </ui>

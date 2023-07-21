@@ -139,6 +139,7 @@ class Screen(QWidget, Ui_frame_damagochi):
     def assert_login(self):
         usr_inp_name = self.line_edit_id.text()
         usr_inp_pw = self.line_edit_pw.text()
+        print('눌리긴하니?')
         # if len(usr_inp_name) == 0:  # 아이디 칸이 비어 있거나 잘못 적었을때
         #     self.no_input_id()
         #     return

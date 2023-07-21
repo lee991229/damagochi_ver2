@@ -44,12 +44,10 @@ class ClientController(QtWidgets.QWidget):
         self.log_in_signal.connect(self.log_in)
         self.set_progressBar.connect(self.set_screen_character_progressBar)
         self.get_item_list_signal.connect(self.set_shop_item_list)
-
-    def set_shop_item_list(self, items_list):
-        self.widget_screen.set_shop_widget(items_list)
-
     def run(self):
         self.widget_screen.show()
+
+
 
     def mousePressEvent(self, widget, event):
         self.drag_start_position = QPoint(widget.x(), widget.y())
@@ -66,6 +64,9 @@ class ClientController(QtWidgets.QWidget):
     #     self.widget_screen.widget_screen_login()
 
     # 게임화면=============================================================================
+    def set_shop_item_list(self, items_list):
+        self.widget_screen.set_shop_widget(items_list)
+
     def get_shop_item_list(self):
         self.client_app.send_get_shop_item_list()
 
@@ -155,6 +156,7 @@ class ClientController(QtWidgets.QWidget):
             # # 캐릭터 stat정보 불러오기
             # self.get_user_character_stat()
             self.widget_screen.widget_game_screen()
+            print(self.client_app.user_id)
             return
         elif return_result is False:
             return NoFrameMessageBox(self, "실패", "로그인 실패", "about")

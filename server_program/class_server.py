@@ -72,6 +72,8 @@ class Server:
             for notified_socket in read_sockets:
                 if notified_socket == self.server_socket:
                     client_socket, client_address = self.server_socket.accept()
+                    print(client_socket, '1')
+                    print(client_address, '2')
                     user = self.receive_message(client_socket)
                     if user is False:
                         continue
@@ -95,10 +97,12 @@ class Server:
 
     def receive_message(self, client_socket: socket, UserTalkRoom=None):
         try:
+            print(client_socket.getsockname(), '소켓이름')
             recv_message = client_socket.recv(self.BUFFER)
             decode_msg = recv_message.decode(self.FORMAT).strip()
             header = decode_msg.split(header_split)[0]
             substance = decode_msg.split(header_split)[1]
+            print(1)
             if header == 'login':  # 로그인
                 data = substance.split(list_split_1)
                 login_name, login_pw = data
