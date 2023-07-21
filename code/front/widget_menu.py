@@ -11,6 +11,6 @@ class UiDialogMenu(QDialog, Ui_dialog_menu):
         self.set_btn_trigger()
 
     def set_btn_trigger(self):
-        self.pushButton.clicked.connect(lambda state: self.screen.show_chat_room())  # 채팅방
+        self.pushButton.clicked.connect(lambda state: (self.close(), self.screen.show_chat_room()))  # 채팅방
         # self.pushButton_2.clicked.connect(self.screen)  # 유저정보
-        self.pushButton_3.clicked.connect(lambda state: self.screen.game_logout())  # 로그아웃
+        self.pushButton_3.clicked.connect(lambda state: (self.close(), self.screen.game_logout()))  # 로그아웃

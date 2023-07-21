@@ -12,15 +12,17 @@ def menu_dialog(screen):
     mywindow2 = UiDialogMenu(screen)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
     mywindow2.exec()
 
-def chat_room(screen):
-    mywindow3 = ChatRoom(screen)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
-    mywindow3.show()
+
+# def chat_room(screen):
+#     mywindow3 = ChatRoom(screen)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
+#     mywindow3.show()
 
 class Screen(QWidget, Ui_frame_damagochi):
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
         self.shop_widget = shop_widget
+        self.chat_room = ChatRoom(self)
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.client_controller = client_controller
         self.set_btn_trigger()  # 버튼 시그널 받는 메서드
@@ -49,13 +51,22 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.btn_menu.clicked.connect(lambda state: (menu_dialog(self)))
 
         pass
-    # 메뉴 다이얼 로그 이벤트
+
+    # 채팅방 관련 함수=====================================================================
+    def chat_input(self):
+        pass
+
+    # 메뉴 다이얼 로그 이벤트============================================================
 
     def show_chat_room(self):
-        chat_room(self)
+        self.chat_room.show()
         print('채팅방이 열려요')
+
     def game_logout(self):
+        self.login_screen()
+        # todo: 클라이언트에 저장된 유저정보 초기화
         print('로그아웃해요')
+
     # 화면 전환===================================================================================================
     # 로그인 화면 전환
     def login_screen(self):
