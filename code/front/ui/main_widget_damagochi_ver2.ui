@@ -1035,7 +1035,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="btn_menu">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -1533,19 +1533,6 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="btn_shop_2">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>상점</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="pushButton_10">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -1554,7 +1541,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>음식</string>
+                <string>&lt;</string>
                </property>
               </widget>
              </item>
@@ -1567,7 +1554,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>놀기</string>
+                <string>&gt;</string>
                </property>
               </widget>
              </item>
@@ -1580,7 +1567,7 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>씻기</string>
+                <string>뒤로가기</string>
                </property>
               </widget>
              </item>

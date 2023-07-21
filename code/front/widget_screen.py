@@ -2,15 +2,25 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
+from code.front.widget_chat_room import ChatRoom
+from code.front.widget_menu import UiDialogMenu
+
 from code.front.widget_shop_item import shop_widget
 
+
+def menu_dialog(screen):
+    mywindow2 = UiDialogMenu(screen)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
+    mywindow2.exec()
+
+def chat_room(screen):
+    mywindow3 = ChatRoom(screen)  # 캐릭터 버튼 프래스 이밴트 다이얼 로그
+    mywindow3.show()
 
 class Screen(QWidget, Ui_frame_damagochi):
     def __init__(self, client_controller):
         super().__init__()
         self.setupUi(self)
-
-        self.shop_widget = shop_widget()
+        self.shop_widget = shop_widget
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.client_controller = client_controller
         self.set_btn_trigger()  # 버튼 시그널 받는 메서드
@@ -36,9 +46,16 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.btn_join_cancel.clicked.connect(lambda state: self.login_screen())
         # 게임 화면 버튼
         self.btn_shop.clicked.connect(lambda state: (self.shop_screen(), self.client_controller.get_shop_item_list()))
+        self.btn_menu.clicked.connect(lambda state: (menu_dialog(self)))
 
         pass
+    # 메뉴 다이얼 로그 이벤트
 
+    def show_chat_room(self):
+        chat_room(self)
+        print('채팅방이 열려요')
+    def game_logout(self):
+        print('로그아웃해요')
     # 화면 전환===================================================================================================
     # 로그인 화면 전환
     def login_screen(self):
@@ -126,4 +143,6 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.progressBar_2.setValue(bar2)
 
     def set_shop_widget(self, items_list):
-        print(items_list, '여긴 스크린 클래스')
+        for i in items_list:
+            item_widget = self.shop_widget(i)
+            self.verticalLayout_19.addWidget(item_widget)

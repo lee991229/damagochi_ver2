@@ -107,7 +107,6 @@ class ClientApp:
                 response_substance = eval(response_substance)
                 self.shop_items_list = response_substance
                 self.client_widget.get_item_list_signal.emit(self.shop_items_list)
-                print(response_substance, '여기는 클라이언트')
 
 
             elif response_header == 'recv_character_stat':
@@ -117,6 +116,7 @@ class ClientApp:
                     response_substance_list.append(int(i))
                 self.user_character_id, self.user_character_hunger, self.user_character_affection, self.user_character_health, self.user_character_exp = response_substance_list
                 self.client_widget.set_progressBar.emit()
+
             elif response_header == 'get_user_character':
                 self.user_character_id = response_substance
                 self.send_get_user_character_stat()

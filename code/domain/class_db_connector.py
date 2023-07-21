@@ -89,6 +89,7 @@ class DBConnector:
     """)
         self.commit_db()
         self.end_conn()
+
     def find_all_shop_item(self):
         c = self.start_conn()
         item_data = c.execute('select * from item_list').fetchall()
@@ -99,6 +100,7 @@ class DBConnector:
             #     all_user_obj_list.append(User(*row_user))
         self.end_conn()
         return item_data
+
     # 로그인
     def user_log_in(self, login_id, login_pw):
         c = self.start_conn()
@@ -157,12 +159,11 @@ class DBConnector:
 
         if character_id is None:
             result = self.character_sign_up(user_id)
-            print('캐릭터 만듬')
             return result
         else:
-            # todo: 만들어 나중에
-            print('캐릭터 있음')
-            return True
+            return character_id
+
+    # 캐릭터 관련 함수
 
     def character_sign_up(self, user_id):
 
@@ -201,8 +202,7 @@ class DBConnector:
             result = self.insert_character_stat(character_id)
             return result
         else:
-            # todo: 만들어 나중에
-            return True
+            return character_stat
 
     def insert_character_stat(self, character_id):
 
@@ -245,7 +245,6 @@ class DBConnector:
 
     # 아이템 db추가
     def item_sign_up(self, item_info_list):
-        print(item_info_list)
         item_name, hunger, affection, health, exp = item_info_list
         c = self.start_conn()
         last_user_row = c.execute('select * from item_list order by item_id desc limit 1').fetchone()
@@ -261,8 +260,9 @@ class DBConnector:
         c = self.start_conn()
         users_id2 = c.execute('select * from item_list where item_id = ?', (item_id,)).fetchone()
         if users_id2 is None:
-            c.execute('insert into item_list(item_id, item_name, hunger, affection, health, exp) values (?, ?, ?, ?, ?, ?)',
-                      (item_id, item_name, hunger, affection, health, exp))
+            c.execute(
+                'insert into item_list(item_id, item_name, hunger, affection, health, exp) values (?, ?, ?, ?, ?, ?)',
+                (item_id, item_name, hunger, affection, health, exp))
             self.commit_db()
             # inserted_user_row = c.execute('select * from item_list order by item_id desc limit 1').fetchone()
             self.end_conn()
