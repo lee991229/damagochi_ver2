@@ -41,7 +41,7 @@ class Screen(QWidget, Ui_frame_damagochi):
 
     # 버튼 시그널 메서드
     def set_btn_trigger(self):
-        self.btn_login.clicked.connect(lambda state: self.assert_login())
+        self.btn_login.clicked.connect(lambda state: (self.assert_login(), self.client_controller.chat_test()))
         self.btn_join.clicked.connect(lambda state: self.join_screen())
         self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
         self.btn_join_register.clicked.connect(lambda state: self.register_event())

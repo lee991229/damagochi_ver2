@@ -64,6 +64,9 @@ class ClientController(QtWidgets.QWidget):
     #     self.widget_screen.widget_screen_login()
 
     # 게임화면=============================================================================
+    def chat_test(self):
+        self.client_app.send_chat_all_clients()
+
     def set_shop_item_list(self, items_list):
         self.widget_screen.set_shop_widget(items_list)
 

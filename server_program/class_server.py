@@ -1,5 +1,6 @@
 import json
 import os
+import threading
 from multiprocessing import Process
 from socket import *
 from threading import Thread, Event
@@ -15,6 +16,51 @@ from common.class_json import *
 header_split = chr(1)
 list_split_1 = chr(2)
 list_split_2 = chr(3)
+
+
+class Room:  # 채팅방
+    def __init__(self):
+        self.clients = []  # 접속한 클라이언트를 담당하는 ChatClient 객체 저장
+
+    def addClient(self, c):  # 클라이언트 하나를 채팅방에 추가
+        self.clients.append(c)
+
+    def delClent(self, c):  # 클라이언트 하나를 채팅방에서 삭제
+        self.clients.remove(c)
+
+    def sendAllClients(self, msg):
+        for c in self.clients:
+            c.sendMsg(msg)
+
+
+class ChatClient:  # 텔레 마케터: 클라이언트 1명이 전송한 메시지를 받고, 받은 메시지를 다시 되돌려줌
+    def __init__(self, soc, r):
+        # self.id = id    #클라이언트 id
+        self.soc = soc  # 담당 클라이언트와 1:1 통신할 소켓
+        self.room = r  # 채팅방 객체
+
+    def recvMsg(self):
+        while True:
+            data = self.soc.recv(1024)
+            msg = data.decode()
+            if msg == '/stop':
+                self.sendMsg(msg)  # 클라이언트쪽의 리시브 쓰레드 종료하라고..
+                # print(self.id,'님 퇴장')
+                break
+
+            # msg = self.id+': ' + msg
+            msg = msg
+            self.room.sendAllClients(msg)
+
+        self.room.delClent(self)
+        # self.room.sendAllClients(self.id+'님이 퇴장하셨습니다.')
+
+    def sendMsg(self, msg):  # 담당한 클라이언트 1명에게만 메시지 전송
+        self.soc.sendall(msg.encode(encoding='utf-8'))
+
+    def run(self):
+        t = threading.Thread(target=self.recvMsg, args=())
+        t.start()
 
 
 class Server:
@@ -33,7 +79,6 @@ class Server:
         self.clients = dict()
         self.thread_for_run = None
         self.run_signal = True
-
         self.decoder = KKODecoder()
         self.encoder = KKOEncoder()
 
@@ -72,10 +117,19 @@ class Server:
             for notified_socket in read_sockets:
                 if notified_socket == self.server_socket:
                     client_socket, client_address = self.server_socket.accept()
+                    self.sockets_list.append(client_socket)
+                    # msg = '사용할 id:'  # 유저 닉네임으로
+                    # client_socket.sendall(msg.encode(encoding='utf-8'))
+                    # msg = client_socket.recv(1024)
+                    # id = msg.decode()
+                    # cc = ChatClient(client_socket, self.room)
+                    # self.room.addClient(cc)
+                    # cc.run()
+                    # print('클라이언트', id, '채팅 시작')
+
                     # user = self.receive_message(client_socket)
                     # if user is False:
                     #     continue
-                    self.sockets_list.append(client_socket)
                     # self.clients[client_socket] = user
                 else:
                     message = self.receive_message(notified_socket)
@@ -90,7 +144,9 @@ class Server:
 
     def send_message(self, client_socket: socket, result):
         client_socket.send(result)
-
+    # def sendAllClients(self, msg):
+    #     for c in self.clients:
+    #         c.sendMsg(msg)
     def receive_message(self, client_socket: socket, UserTalkRoom=None):
         try:
             recv_message = client_socket.recv(self.BUFFER)
@@ -114,6 +170,12 @@ class Server:
                         self.FORMAT)
                     client_socket.send(response_header)
 
+            elif header == 'send_all_clients':  # 채팅
+                msg = substance
+                response_header = f"{f'sendAllClients{header_split}{msg}':{self.BUFFER}}".encode(self.FORMAT)
+                for c in self.sockets_list:
+                    print(c,'들에게 메시지 보낸다')
+                    # c.send(response_header)
 
             elif header == 'assertu_username':  # 아이디 중복
                 join_username = substance

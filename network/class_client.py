@@ -45,7 +45,10 @@ class ClientApp:
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
-
+    def send_chat_all_clients(self):
+        msg = '메시지 가니?'
+        client_sand_data = f"{f'send_all_clients{header_split}{msg}':{self.BUFFER}}".encode(self.FORMAT)
+        self.client_socket.send(client_sand_data)
     def send_get_shop_item_list(self):
         client_sand_data = f"{f'get_shop_item_list{header_split}':{self.BUFFER}}".encode(
             self.FORMAT)
