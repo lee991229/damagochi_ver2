@@ -13,7 +13,7 @@ class ClientApp2:
 
     HOST = '127.0.0.12'
     PORT = 9999
-    BUFFER = 5000
+    BUFFER = 10000
     FORMAT = "utf-8"
     HEADER_LENGTH = 30
 
@@ -45,8 +45,8 @@ class ClientApp2:
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
-    def send_chat_all_clients(self):
-        msg = '메시지 가니?'
+    def send_chat_all_clients(self, user_chat):
+        msg = user_chat
         client_sand_data = f"{f'send_all_clients{header_split}{msg}':{self.BUFFER}}".encode(self.FORMAT)
         self.client_socket.send(client_sand_data)
     def send_get_shop_item_list(self):
@@ -83,6 +83,7 @@ class ClientApp2:
     def receive_message(self):
         while True:
             return_result = self.client_socket.recv(self.BUFFER).decode(self.FORMAT).strip()
+            print(return_result.split(header_split), '리스트 확인')
             response_header = return_result.split(header_split)[0]
             response_substance = return_result.split(header_split)[1]
 
@@ -91,6 +92,11 @@ class ClientApp2:
                     self.client_widget.assert_same_id_signal.emit(True)
                 else:
                     self.client_widget.assert_same_id_signal.emit(False)
+
+            elif response_header == 'recvallclients':
+                msg = response_substance
+                print(msg, '받는 메시지')
+                self.client_widget.recv_message.emit(msg)
 
             elif response_header == 'login':
                 if response_substance == 'False':

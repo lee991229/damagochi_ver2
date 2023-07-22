@@ -19,7 +19,7 @@ class ClientController(QtWidgets.QWidget):
     assert_join_signal = pyqtSignal(bool)
     set_progressBar = pyqtSignal()
     get_item_list_signal = pyqtSignal(list)
-
+    recv_message = pyqtSignal(str)
     def __init__(self, client_app=ClientApp):
         super().__init__()
         self.client_app = client_app
@@ -44,6 +44,8 @@ class ClientController(QtWidgets.QWidget):
         self.log_in_signal.connect(self.log_in)
         self.set_progressBar.connect(self.set_screen_character_progressBar)
         self.get_item_list_signal.connect(self.set_shop_item_list)
+        #채팅 시그날
+        self.recv_message.connect(self.set_recv_message)
     def run(self):
         self.widget_screen.show()
 
@@ -62,10 +64,15 @@ class ClientController(QtWidgets.QWidget):
 
     # def set_widget_screen_login(self):
     #     self.widget_screen.widget_screen_login()
+    # 채팅 ===============================================================================
+    def set_recv_message(self, chat):
+        self.widget_screen.chat_input(chat)
+
+    def chat_test(self, user_chat):
+        self.client_app.send_chat_all_clients(user_chat)
 
     # 게임화면=============================================================================
-    def chat_test(self):
-        self.client_app.send_chat_all_clients()
+
 
     def set_shop_item_list(self, items_list):
         self.widget_screen.set_shop_widget(items_list)
@@ -75,11 +82,19 @@ class ClientController(QtWidgets.QWidget):
 
     def set_game_timer(self):
         self.timer.timer1.start()
+    def click_eat_btn(self):
+        self.client_app.user_character_hunger += 10
+        self.set_screen_character_progressBar()
+    def click_play_btn(self):
+        self.client_app.user_character_affection += 10
+        self.set_screen_character_progressBar()
+
+    def click_wash_btn(self):
+        print('깨끗해짐;')
+        # self.client_app.user_character_affection
 
     def character_timer_event(self):
-
         self.timer_event_character_hunger()  # 배고픔 수치 줄어듬
-
         # 애정도 수치 줄어듬
         if self.client_app.user_character_hunger <= 20:
             self.timer_event_character_affection()
@@ -92,19 +107,19 @@ class ClientController(QtWidgets.QWidget):
         self.client_app.user_character_hunger -= random.randint(1, 5)
         if self.client_app.user_character_hunger < 0:
             self.client_app.user_character_hunger = 0
-        print('배가 고파져', self.client_app.user_character_hunger)
+        # print('배가 고파져', self.client_app.user_character_hunger)
 
     def timer_event_character_affection(self):
         self.client_app.user_character_affection -= random.randint(1, 5)
         if self.client_app.user_character_affection < 0:
             self.client_app.user_character_affection = 0
-        print('배가고파 애정도가 떨어져', self.client_app.user_character_affection)
+        # print('배가고파 애정도가 떨어져', self.client_app.user_character_affection)
 
     def timer_event_character_health(self):
         self.client_app.user_character_health -= random.randint(1, 5)
         if self.client_app.user_character_health < 0:
             self.client_app.user_character_health = 0
-        print('배고프고 애정도도 낮아서 건강이 나빠져', self.client_app.user_character_health)
+        # print('배고프고 애정도도 낮아서 건강이 나빠져', self.client_app.user_character_health)
 
     def set_screen_character_progressBar(self):
         bar1 = self.client_app.user_character_hunger
@@ -159,7 +174,6 @@ class ClientController(QtWidgets.QWidget):
             # # 캐릭터 stat정보 불러오기
             # self.get_user_character_stat()
             self.widget_screen.widget_game_screen()
-            print(self.client_app.user_id)
             return
         elif return_result is False:
             return NoFrameMessageBox(self, "실패", "로그인 실패", "about")

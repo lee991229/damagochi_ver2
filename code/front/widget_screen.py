@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from code.front.ui.ui_class_main_widget_damagochi_ver2 import Ui_frame_damagochi
 from code.front.widget_chat_room import ChatRoom
 from code.front.widget_menu import UiDialogMenu
+from code.front.widget_message_label import MessageLabel
 
 from code.front.widget_shop_item import shop_widget
 
@@ -22,9 +23,9 @@ class Screen(QWidget, Ui_frame_damagochi):
         super().__init__()
         self.setupUi(self)
         self.shop_widget = shop_widget
-        self.chat_room = ChatRoom(self)
         # self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.client_controller = client_controller
+        self.chat_room = ChatRoom(self)
         self.set_btn_trigger()  # 버튼 시그널 받는 메서드
         self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -32,6 +33,9 @@ class Screen(QWidget, Ui_frame_damagochi):
         self.join_username = None
         self.join_pw = None
         self.join_usernickname = None
+
+    def screen_chat_test(self, user_chat):
+        self.client_controller.chat_test(user_chat)
 
     def mousePressEvent(self, event):
         self.client_controller.mousePressEvent(self, event)
@@ -41,7 +45,8 @@ class Screen(QWidget, Ui_frame_damagochi):
 
     # 버튼 시그널 메서드
     def set_btn_trigger(self):
-        self.btn_login.clicked.connect(lambda state: (self.assert_login(), self.client_controller.chat_test()))
+        self.btn_login.clicked.connect(lambda state: (self.assert_login()))
+        # self.client_controller.chat_test()
         self.btn_join.clicked.connect(lambda state: self.join_screen())
         self.btn_join_duplicatecheck.clicked.connect(lambda state: self.user_name_duplicate_check())
         self.btn_join_register.clicked.connect(lambda state: self.register_event())
@@ -49,12 +54,16 @@ class Screen(QWidget, Ui_frame_damagochi):
         # 게임 화면 버튼
         self.btn_shop.clicked.connect(lambda state: (self.shop_screen(), self.client_controller.get_shop_item_list()))
         self.btn_menu.clicked.connect(lambda state: (menu_dialog(self)))
+        self.pushButton_8.clicked.connect(lambda state: self.client_controller.click_eat_btn()) # 음식
+        self.pushButton_9.clicked.connect(lambda state: self.client_controller.click_play_btn()) # 놀기
+        self.pushButton_7.clicked.connect(lambda state: self.client_controller.click_wash_btn()) # 씻기
 
-        pass
 
     # 채팅방 관련 함수=====================================================================
-    def chat_input(self):
-        pass
+    def chat_input(self, chat):
+        chat2 = MessageLabel(chat)
+        self.chat_room.verticalLayout_4.addWidget(chat2)
+
 
     # 메뉴 다이얼 로그 이벤트============================================================
 
@@ -139,7 +148,7 @@ class Screen(QWidget, Ui_frame_damagochi):
     def assert_login(self):
         usr_inp_name = self.line_edit_id.text()
         usr_inp_pw = self.line_edit_pw.text()
-        print('눌리긴하니?')
+        # print('눌리긴하니?')
         # if len(usr_inp_name) == 0:  # 아이디 칸이 비어 있거나 잘못 적었을때
         #     self.no_input_id()
         #     return
