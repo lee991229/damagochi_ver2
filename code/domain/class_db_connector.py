@@ -276,7 +276,7 @@ class DBConnector:
     #     if username_id is None:
     #         print('사용 가능한 아이디 입니다.')  # 사용 가능 아이디
     #         return True
-    #     else:
+    #     else:tj
     #         print('사용 불가능한 아이디 입니다.')  # 사용불가
     #         return False
     #

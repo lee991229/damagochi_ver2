@@ -42,9 +42,14 @@ class ClientApp2:
 
         # 클라이언트 recv 스레드
         self.receive_thread = Thread(target=self.receive_message)
+<<<<<<< HEAD
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
+=======
+        self.receive_thread.daemon =True
+        self.receive_thread.start()
+>>>>>>> 428085be19f64f85331c87da508513a5fa28497b
     def send_get_shop_item_list(self):
         client_sand_data = f"{f'get_shop_item_list{header_split}':{self.BUFFER}}".encode(
             self.FORMAT)
@@ -79,6 +84,10 @@ class ClientApp2:
     def receive_message(self):
         while True:
             return_result = self.client_socket.recv(self.BUFFER).decode(self.FORMAT).strip()
+<<<<<<< HEAD
+=======
+            print(1)
+>>>>>>> 428085be19f64f85331c87da508513a5fa28497b
             response_header = return_result.split(header_split)[0]
             response_substance = return_result.split(header_split)[1]
 
@@ -124,3 +133,7 @@ class ClientApp2:
                 #     self.client_widget.assert_join_signal.emit(True)
                 # else:
                 #     self.client_widget.assert_join_signal.emit(False)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 428085be19f64f85331c87da508513a5fa28497b

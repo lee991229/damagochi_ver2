@@ -149,7 +149,7 @@ QLineEdit{
                <string/>
               </property>
               <property name="pixmap">
-               <pixmap resource="../../../../KKOTalk/Code/front/src_img/my_qrc.qrc">:/newPrefix/user.svg</pixmap>
+               <pixmap resource="../src_img/my_qrc.qrc">:/newPrefix/user-minus-l.svg</pixmap>
               </property>
              </widget>
             </item>
@@ -194,8 +194,8 @@ QLineEdit{
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../../../KKOTalk/Code/front/src_img/my_qrc.qrc">
-             <normaloff>:/newPrefix/user-plus.svg</normaloff>:/newPrefix/user-plus.svg</iconset>
+            <iconset resource="../src_img/my_qrc.qrc">
+             <normaloff>:/newPrefix/user-l.svg</normaloff>:/newPrefix/user-l.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -223,7 +223,7 @@ QLineEdit{
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../../../KKOTalk/Code/front/src_img/my_qrc.qrc">
+            <iconset resource="../src_img/my_qrc.qrc">
              <normaloff>:/newPrefix/log-out.svg</normaloff>:/newPrefix/log-out.svg</iconset>
            </property>
            <property name="iconSize">
@@ -252,7 +252,7 @@ QLineEdit{
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../../../../KKOTalk/Code/front/src_img/my_qrc.qrc">
+            <iconset resource="../src_img/my_qrc.qrc">
              <normaloff>:/newPrefix/x-yellow.svg</normaloff>:/newPrefix/x-yellow.svg</iconset>
            </property>
            <property name="iconSize">
@@ -447,7 +447,7 @@ QLineEdit{
   </layout>
  </widget>
  <resources>
-  <include location="../../../../KKOTalk/Code/front/src_img/my_qrc.qrc"/>
+  <include location="../src_img/my_qrc.qrc"/>
  </resources>
  <connections/>
 </ui>
