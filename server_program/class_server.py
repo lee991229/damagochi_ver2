@@ -72,20 +72,16 @@ class Server:
             for notified_socket in read_sockets:
                 if notified_socket == self.server_socket:
                     client_socket, client_address = self.server_socket.accept()
-                    print(client_socket, '1')
-                    print(client_address, '2')
-                    user = self.receive_message(client_socket)
-                    if user is False:
-                        continue
+                    # user = self.receive_message(client_socket)
+                    # if user is False:
+                    #     continue
                     self.sockets_list.append(client_socket)
-                    self.clients[client_socket] = user
-
+                    # self.clients[client_socket] = user
                 else:
                     message = self.receive_message(notified_socket)
-
                     if message is False:
                         self.sockets_list.remove(notified_socket)
-                        del self.clients[notified_socket]
+                        # del self.clients[notified_socket]
                         continue
 
             for notified_socket in exception_sockets:
@@ -97,12 +93,11 @@ class Server:
 
     def receive_message(self, client_socket: socket, UserTalkRoom=None):
         try:
-            print(client_socket.getsockname(), '소켓이름')
             recv_message = client_socket.recv(self.BUFFER)
             decode_msg = recv_message.decode(self.FORMAT).strip()
             header = decode_msg.split(header_split)[0]
             substance = decode_msg.split(header_split)[1]
-            print(1)
+
             if header == 'login':  # 로그인
                 data = substance.split(list_split_1)
                 login_name, login_pw = data
@@ -166,8 +161,6 @@ class Server:
                 items = json.dumps(result)
                 message = f"recv_shop_item_list{header_split}{items}"
                 client_socket.send(bytes(message, "UTF-8"))
-
-
         except:
             return False
 

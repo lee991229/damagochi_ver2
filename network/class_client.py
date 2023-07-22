@@ -45,6 +45,7 @@ class ClientApp:
         self.receive_thread.daemon = True
         self.receive_thread.start()
 
+
     def send_get_shop_item_list(self):
         client_sand_data = f"{f'get_shop_item_list{header_split}':{self.BUFFER}}".encode(
             self.FORMAT)
